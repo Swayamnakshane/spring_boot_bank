@@ -3,11 +3,9 @@ kind: StatefulSet
 metadata:
   name: mysql-deployment
   namespace: bank
-  labels:
-    app: bankapp
 spec:
   serviceName: mysql
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: bankapp
@@ -17,10 +15,10 @@ spec:
         app: bankapp
     spec:
       containers:
-      - name: mysql
+      - name: mysql-cont
         image: mysql:latest
         ports:
-          - containerPort: 3306
+        - containerPort: 3306
         env:
         - name: MYSQL_ROOT_PASSWORD
           valueFrom:
@@ -33,10 +31,9 @@ spec:
               name: bank-configmap
               key: MYSQL_DATABASE
         volumeMounts:
-        - name: mysql
+        - name: mysql-persistent-storage
           mountPath: /var/lib/mysql
-
-    volumes:
-      - name: mysql
+      volumes:
+      - name: mysql-persistent-storage
         persistentVolumeClaim:
           claimName: mysql-pvc
