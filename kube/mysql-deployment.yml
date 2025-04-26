@@ -42,6 +42,7 @@ spec:
       labels:
         app: bankapp
     spec:
+      storageClassName: standard
       accessModes:
         - ReadWriteOnce
       resources:
